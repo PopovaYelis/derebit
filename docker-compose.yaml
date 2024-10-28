@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    environment:
+      DB_URL: postgresql+asyncpg://admin:admin@database:5432/admin
+    depends_on:
+      - postgres
+    ports:
+      - '5050:5050'
+    restart: always
+    networks:
+      - backend
+
+
+
+  postgres:
+    container_name: database
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: admin
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+
+volumes:
+  db_data:
+
+networks:
+  backend:
+    driver: bridge
